@@ -1,6 +1,4 @@
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class ListManipulationAdvanced_05 {
@@ -14,112 +12,98 @@ public class ListManipulationAdvanced_05 {
         String command = scanner.nextLine();
 
         while (!command.equals("end")) {
+            String[] commandParts = command.split(" ");
 
-            if (command.contains("Contains")) {
-                int number = Integer.parseInt(command.split(" ")[1]);
+
+
+            if (commandParts[0].equals("Contains")) {
+                int number = Integer.parseInt(commandParts[1]);
 
                 if (numbers.contains(number)) {
                     System.out.println("Yes");
                 } else {
                     System.out.println("No such number");
                 }
-            } else if (command.contains("Print") && command.contains("even")) {
-                printEvenNumbers(numbers);
-            } else if (command.contains("Print") && command.contains("odd")) {
-                printOddNumbers(numbers);
-            } else if (command.contains("Get sum")) {
-                printNumbersSum(numbers);
-            } else if (command.contains("Filter")) {
-                int number = Integer.parseInt(command.split(" ")[2]);
+            } else if (commandParts[0].equals("Print")) {
 
-                if (command.contains("<") && command.contains("=")) {
-                    printBiggerOrEqualNumbers(numbers, number);
-                } else if (command.contains(">") && command.contains("=")) {
-                    printSmallerOrEqualNumbers(numbers, number);
-                } else if (command.contains("<")) {
-                    printBiggerNumbers(numbers, number);
-                } else if (command.contains(">")) {
-                    printSmallerNumbers(numbers, number);
+                if (commandParts[1].equals("even")) {
+                    List<Integer> evenNumbers = new ArrayList<>();
+
+                    for (Integer number : numbers) {
+
+                        if (number % 2 == 0) {
+                            evenNumbers.add(number);
+                        }
+                    }
+                    System.out.println(evenNumbers.toString().replaceAll("[\\[\\],]", ""));
+                } else if (commandParts[1].equals("odd")) {
+                    List<Integer> oddNumbers = new ArrayList<>();
+
+                    for (Integer number : numbers) {
+
+                        if (number % 2 != 0) {
+                            oddNumbers.add(number);
+                        }
+                    }
+                    System.out.println(oddNumbers.toString().replaceAll("[\\[\\],]", ""));
+                }
+            } else if (commandParts[0].equals("Get") && commandParts[1].equals("sum")) {
+                int sum = 0;
+
+                for (Integer number : numbers) {
+                    sum += number;
+                }
+                System.out.println(sum);
+            } else if (commandParts[0].equals("Filter")) {
+                String condition = commandParts[1];
+                int number = Integer.parseInt(commandParts[2]);
+
+                List<Integer> integers = new ArrayList<>();
+
+                switch (condition) {
+                    case "<":
+
+                        for (Integer integer : numbers) {
+
+                            if (integer < number) {
+                                integers.add(integer);
+                            }
+                        }
+                        System.out.println(integers.toString().replaceAll("[\\[\\],]", ""));
+                        break;
+                    case ">":
+
+                        for (Integer integer : numbers) {
+
+                            if (integer > number) {
+                                integers.add(integer);
+                            }
+                        }
+                        System.out.println(integers.toString().replaceAll("[\\[\\],]", ""));
+                        break;
+                    case ">=":
+
+                        for (Integer integer : numbers) {
+
+                            if (integer >= number) {
+                                integers.add(integer);
+                            }
+                        }
+                        System.out.println(integers.toString().replaceAll("[\\[\\],]", ""));
+                        break;
+                    case "<=":
+
+                        for (Integer integer : numbers) {
+
+                            if (integer <= number) {
+                                integers.add(integer);
+                            }
+                        }
+                        System.out.println(integers.toString().replaceAll("[\\[\\],]", ""));
+                        break;
                 }
             }
             command = scanner.nextLine();
         }
-        System.out.println(numbers.toString().replace("[", "")
-                .replace(",", "").replace("]", ""));
-    }
-
-    public static void printEvenNumbers(List<Integer> list) {
-
-        for (int number : list) {
-
-            if (number % 2 == 0) {
-                System.out.print(number + " ");
-            }
-        }
-        System.out.println();
-    }
-
-    public static void printOddNumbers(List<Integer> list) {
-
-        for (int number : list) {
-
-            if (number % 2 != 0) {
-                System.out.print(number + " ");
-            }
-        }
-        System.out.println();
-    }
-
-    public static void printNumbersSum(List<Integer> list) {
-        int sum = 0;
-
-        for (int number : list) {
-            sum = sum + number;
-        }
-        System.out.println(sum);
-    }
-
-    public static void printBiggerOrEqualNumbers(List<Integer> list, int number) {
-
-        for (int num : list) {
-
-            if (num <= number) {
-                System.out.print(num + " ");
-            }
-        }
-        System.out.println();
-    }
-
-    public static void printSmallerOrEqualNumbers(List<Integer> list, int number) {
-
-        for (int num : list) {
-
-            if (num >= number) {
-                System.out.print(num + " ");
-            }
-        }
-        System.out.println();
-    }
-
-    public static void printBiggerNumbers(List<Integer> list, int number) {
-
-        for (int num : list) {
-
-            if (num < number) {
-                System.out.print(num + " ");
-            }
-        }
-        System.out.println();
-    }
-
-    public static void printSmallerNumbers(List<Integer> list, int number) {
-
-        for (int num : list) {
-
-            if (num > number) {
-                System.out.print(num + " ");
-            }
-        }
-        System.out.println();
     }
 }
