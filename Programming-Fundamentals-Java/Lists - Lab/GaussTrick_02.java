@@ -16,15 +16,15 @@ public class GaussTrick_02 {
         List<Integer> sumNumbers = new ArrayList<>();
 
         for (int i = 0; i < numbers.size(); i++) {
-            sumNumbers.add(numbers.get(i) + numbers.get(numbers.size() - 1));
-            numbers.remove(i);
-            numbers.remove(numbers.size() - 1);
-            i = -1;
 
             if (numbers.size() == 1) {
                 sumNumbers.add(numbers.get(0));
                 break;
             }
+            sumNumbers.add(numbers.get(i) + numbers.get(numbers.size() - 1));
+            numbers.remove(i);
+            numbers.remove(numbers.size() - 1);
+            i = -1;
         }
         System.out.println(sumNumbers.toString().replace("[", "").replace("]", "").replaceAll(",", ""));
     }
