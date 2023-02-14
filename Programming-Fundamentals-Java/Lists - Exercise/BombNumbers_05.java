@@ -11,32 +11,21 @@ public class BombNumbers_05 {
                 .stream(scanner.nextLine().split(" "))
                 .map(Integer::parseInt)
                 .collect(Collectors.toList());
-        String input = scanner.nextLine();
+        String[] inputParts = scanner.nextLine().split(" ");
 
-        int bombNumber = Integer.parseInt(input.split(" ")[0]);
-        int power = Integer.parseInt(input.split(" ")[1]);
-        int bombNumberIndex = numbers.indexOf(bombNumber);
-        int counter = 0;
+        int bombNumber = Integer.parseInt(inputParts[0]);
+        int power = Integer.parseInt(inputParts[1]);
 
-        for (int i = 0; i < bombNumberIndex; i++) {
-            numbers.remove(bombNumberIndex - 1 - i);
-            counter++;
+        while (numbers.contains(bombNumber)) {
+            int index = numbers.indexOf(bombNumber);
 
-            if (counter == power) {
-                break;
+            int left = Math.max(0, index - power);
+            int right = Math.min(index + power, numbers.size() - 1);
+
+            if (right >= left) {
+                numbers.subList(left, right + 1).clear();
             }
         }
-        bombNumberIndex = numbers.indexOf(bombNumber);
-
-        for (int i = bombNumberIndex; i < numbers.size() - 1; i++) {
-            numbers.remove(i + 1);
-            counter++;
-
-            if (counter == power) {
-                break;
-            }
-        }
-        numbers.remove(Integer.valueOf(bombNumber));
         int sum = 0;
 
         for (Integer number : numbers) {
