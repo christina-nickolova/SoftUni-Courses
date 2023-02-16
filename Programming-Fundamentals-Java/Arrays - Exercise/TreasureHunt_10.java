@@ -1,122 +1,68 @@
+import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class TreasureHunt_10 {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        String[] chestArray = scanner.nextLine().split("\\|");
-        String[] inputArray = scanner.nextLine().split(" ");
+        List<String> chest = Arrays
+                .stream(scanner.nextLine().split("\\|"))
+                .collect(Collectors.toList());
+        String command = scanner.nextLine();
 
-        while (!inputArray[0].equals("Yohoho!")) {
-            String command = inputArray[0];
+        while (!command.equals("Yohoho!")) {
+            String[] commandParts = command.split(" ");
 
-            switch (command) {
+            switch (commandParts[0]) {
                 case "Loot":
-                    int counter = 0;
 
-                    for (int i = 1; i < inputArray.length; i++) {
+                    for (int i = 1; i < commandParts.length; i++) {
+                        String currentItem = commandParts[i];
 
-                        for (String element : chestArray) {
-
-                            if (inputArray[i].equals(element)) {
-                                counter++;
-                                break;
-                            }
+                        if (!chest.contains(currentItem)) {
+                            chest.add(0, currentItem);
                         }
                     }
-                    String[] lootArray = new String[chestArray.length + inputArray.length - 1 - counter];
-                    int index = 0;
-
-                    for (int i = inputArray.length - 1; i > 0; i--) {
-                        boolean isContained = false;
-
-                        for (String element : chestArray) {
-
-                            if (inputArray[i].equals(element)) {
-                                isContained = true;
-                                break;
-                            }
-                        }
-
-                        if (!isContained) {
-                            lootArray[index] = inputArray[i];
-                            index++;
-                        }
-                    }
-
-                    for (String element : chestArray) {
-                        lootArray[index] = element;
-                        index++;
-                    }
-                    chestArray = lootArray;
                     break;
                 case "Drop":
-                    int position = Integer.parseInt(inputArray[1]);
+                    int index = Integer.parseInt(commandParts[1]);
 
-                    if (position < 0 || position >= chestArray.length - 1) {
-                        inputArray = scanner.nextLine().split(" ");
-                        continue;
-                    }
-                    String currentElement = chestArray[position];
-
-                    for (int i = position; i < chestArray.length; i++) {
-
-                        if (i != chestArray.length - 1) {
-                            chestArray[i] = chestArray[i + 1];
-                        } else {
-                            chestArray[i] = currentElement;
-                        }
+                    if (index >= 0 && index < chest.size()) {
+                        String currentItem = chest.get(index);
+                        chest.remove(index);
+                        chest.add(currentItem);
                     }
                     break;
                 case "Steal":
-                    int count = Integer.parseInt(inputArray[1]);
+                    int count = Integer.parseInt(commandParts[1]);
 
-                    if (count >= chestArray.length) {
-
-                        for (int i = 0; i < chestArray.length; i++) {
-
-                            if (i == chestArray.length - 1) {
-                                System.out.println(chestArray[i]);
-                            } else {
-                                System.out.print(chestArray[i] + ", ");
-                            }
-                        }
-                        chestArray = new String[0];
-                        inputArray = scanner.nextLine().split(" ");
-                        continue;
+                    if (count < chest.size()) {
+                        System.out.println(chest
+                                .subList(chest.size() - count, chest.size())
+                                .toString().replaceAll("[\\[\\]]", ""));
+                        chest.subList(chest.size() - count, chest.size()).clear();
+                    } else {
+                        System.out.println(chest
+                                .toString().replaceAll("[\\[\\]]", ""));
+                        chest.clear();
                     }
-                    lootArray = new String[chestArray.length - count];
-
-                    for (int i = 0; i < chestArray.length; i++) {
-
-                        if (i < chestArray.length - count) {
-                            lootArray[i] = chestArray[i];
-                        } else {
-
-                            if (i == chestArray.length - 1) {
-                                System.out.println(chestArray[i]);
-                            } else {
-                                System.out.print(chestArray[i] + ", ");
-                            }
-                        }
-                    }
-                    chestArray = lootArray;
                     break;
             }
-            inputArray = scanner.nextLine().split(" ");
+            command = scanner.nextLine();
         }
 
-        if (chestArray.length == 0) {
+        if (chest.isEmpty()) {
             System.out.println("Failed treasure hunt.");
         } else {
-            double averageTreasureGain;
-            int itemsLength = 0;
+            int itemsTotalLength = 0;
 
-            for (String element : chestArray) {
-                itemsLength += element.length();
+            for (String item : chest) {
+                itemsTotalLength += item.length();
             }
-            averageTreasureGain = itemsLength * 1.0 / chestArray.length;
-            System.out.printf("Average treasure gain: %.2f pirate credits.", averageTreasureGain);
+            double average = itemsTotalLength * 1.0 / chest.size();
+            System.out.printf("Average treasure gain: %.2f pirate credits.", average);
         }
     }
 }
