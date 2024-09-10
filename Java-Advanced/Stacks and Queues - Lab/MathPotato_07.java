@@ -1,41 +1,39 @@
-import java.util.*;
+import java.util.Collections;
+import java.util.PriorityQueue;
+import java.util.Scanner;
 
 public class MathPotato_07 {
+
     public static void main(String[] args) {
+
         Scanner scanner = new Scanner(System.in);
 
-        PriorityQueue<String> queue = new PriorityQueue<>();
+        String[] players = scanner.nextLine().split("\\s+");
 
-        Arrays.stream(scanner.nextLine().split("\\s+"))
-                .forEach(queue::offer);
+        PriorityQueue<String> queue = new PriorityQueue<>();
+        Collections.addAll(queue, players);
 
         int number = Integer.parseInt(scanner.nextLine());
 
-        int cycle = 1;
+        int rotation = 0;
 
         while (queue.size() > 1) {
+            rotation++;
 
-            for (int i = 0; i < number; i++) {
-                queue.offer(Objects.requireNonNull(queue.poll()));
-            }
-
-            if (isPrime(cycle)) {
-                System.out.println("Prime " + queue.peek());
-            } else {
+            if (!isPrime(rotation) || rotation == 1) {
                 System.out.println("Removed " + queue.poll());
+            } else {
+                String rotatedPlayer = queue.poll();
+                queue.offer(rotatedPlayer);
+                System.out.println("Prime " + rotatedPlayer);
             }
-            cycle++;
         }
         System.out.println("Last is " + queue.peek());
     }
 
     public static boolean isPrime(int number) {
 
-        if (number <= 1) {
-            return false;
-        }
-
-        for (int i = 2; i <= number / 2; i++) {
+        for (int i = 2; i < number; i++) {
 
             if (number % i == 0) {
                 return false;
