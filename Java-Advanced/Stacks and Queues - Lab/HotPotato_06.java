@@ -1,25 +1,31 @@
 import java.util.ArrayDeque;
-import java.util.Arrays;
-import java.util.Objects;
+import java.util.Collections;
 import java.util.Scanner;
 
 public class HotPotato_06 {
+
     public static void main(String[] args) {
+
         Scanner scanner = new Scanner(System.in);
 
-        ArrayDeque<String> queue = new ArrayDeque<>();
+        String[] players = scanner.nextLine().split("\\s+");
 
-        Arrays.stream(scanner.nextLine().split("\\s+"))
-                .forEach(queue::offer);
+        ArrayDeque<String> queue = new ArrayDeque<>();
+        Collections.addAll(queue, players);
 
         int number = Integer.parseInt(scanner.nextLine());
 
-        while (queue.size() > 1) {
+        int rotation = 0;
 
-            for (int i = 1; i < number; i++) {
-                queue.offer(Objects.requireNonNull(queue.poll()));
+        while (queue.size() > 1) {
+            rotation++;
+
+            if (rotation % number == 0) {
+                System.out.println("Removed " + queue.poll());
+            } else {
+                String rotatedPlayer = queue.poll();
+                queue.offer(rotatedPlayer);
             }
-            System.out.println("Removed " + queue.poll());
         }
         System.out.println("Last is " + queue.peek());
     }
