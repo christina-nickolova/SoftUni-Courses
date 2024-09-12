@@ -2,35 +2,39 @@ import java.util.ArrayDeque;
 import java.util.Scanner;
 
 public class BrowserHistoryUpgrade_08 {
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        String input = scanner.nextLine();
 
-        ArrayDeque<String> backStack = new ArrayDeque<>();
-        ArrayDeque<String> forwardStack = new ArrayDeque<>();
+    public static void main(String[] args) {
+
+        Scanner scanner = new Scanner(System.in);
+
+        ArrayDeque<String> stack = new ArrayDeque<>();
+        ArrayDeque<String> newStack = new ArrayDeque<>();
+
+
+        String input = scanner.nextLine();
 
         while (!input.equals("Home")) {
 
             if (input.equals("back")) {
 
-                if (backStack.size() < 2) {
-                    System.out.println("no previous URLs");
+                if (stack.size() > 1) {
+                    newStack.push(stack.pop());
+                    System.out.println(stack.peek());
                 } else {
-                    forwardStack.push(backStack.pop());
-                    System.out.println(backStack.peek());
+                    System.out.println("no previous URLs");
                 }
             } else if (input.equals("forward")) {
 
-                if (forwardStack.isEmpty()) {
-                    System.out.println("no next URLs");
+                if (!newStack.isEmpty()) {
+                    System.out.println(newStack.peek());
+                    stack.push(newStack.pop());
                 } else {
-                    backStack.push(forwardStack.peek());
-                    System.out.println(forwardStack.pop());
+                    System.out.println("no next URLs");
                 }
             } else {
-                backStack.push(input);
-                System.out.println(backStack.peek());
-                forwardStack.clear();
+                stack.push(input);
+                newStack.clear();
+                System.out.println(stack.peek());
             }
             input = scanner.nextLine();
         }
