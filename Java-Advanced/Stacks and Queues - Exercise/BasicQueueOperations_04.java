@@ -1,43 +1,51 @@
 import java.util.ArrayDeque;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Scanner;
 
 public class BasicQueueOperations_04 {
+
     public static void main(String[] args) {
+
         Scanner scanner = new Scanner(System.in);
 
-        int[] integers = Arrays
-                .stream(scanner.nextLine().split(" "))
-                .mapToInt(Integer::parseInt)
-                .toArray();
+        int[] input = readIntArray(scanner);
+        int elementsToOffer = input[0];
+        int elementsToPoll = input[1];
+        int elementToCheck = input[2];
 
-        int n = integers[0];
-        int s = integers[1];
-        int x = integers[2];
-
-        int[] numbers = Arrays
-                .stream(scanner.nextLine().split(" "))
-                .mapToInt(Integer::parseInt)
-                .toArray();
+        int[] elements = readIntArray(scanner);
 
         ArrayDeque<Integer> queue = new ArrayDeque<>();
 
-        for (int i = 0; i < n; i++) {
-            int currentNumber = numbers[i];
-            queue.offer(currentNumber);
+        for (int i = 0; i < elementsToOffer; i++) {
+            int currentElement = elements[i];
+            queue.offer(currentElement);
         }
 
-        for (int i = 0; i < s; i++) {
+        for (int i = 0; i < elementsToPoll; i++) {
             queue.poll();
         }
 
-        if (queue.contains(x)) {
+        if (queue.isEmpty()) {
+            System.out.println(0);
+        } else if (queue.contains(elementToCheck)) {
             System.out.println("true");
-        } else if (queue.size() == 0) {
-            System.out.println("0");
         } else {
-            System.out.println(Collections.min(queue));
+            int smallestElement = queue.peek();
+
+            for (int element : queue) {
+
+                if (smallestElement > element) {
+                    smallestElement = element;
+                }
+            }
+            System.out.println(smallestElement);
         }
+    }
+
+    private static int[] readIntArray(Scanner scanner) {
+        return Arrays.stream(scanner.nextLine().split("\\s+"))
+                .mapToInt(Integer::parseInt)
+                .toArray();
     }
 }
