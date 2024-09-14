@@ -1,27 +1,28 @@
 import java.util.ArrayDeque;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Scanner;
 
 public class MaximumElement_03 {
+
     public static void main(String[] args) {
+
         Scanner scanner = new Scanner(System.in);
 
-        int number = Integer.parseInt(scanner.nextLine());
+        int commandsCount = Integer.parseInt(scanner.nextLine());
 
         ArrayDeque<Integer> stack = new ArrayDeque<>();
 
-        for (int i = 0; i < number; i++) {
-            int[] input = Arrays.stream(scanner.nextLine().split("\\s+"))
-                    .mapToInt(Integer::parseInt)
-                    .toArray();
+        for (int i = 0; i < commandsCount; i++) {
+            String command = scanner.nextLine();
 
-            if (input[0] == 1) {
-                stack.push(input[1]);
-            } else if (input[0] == 2) {
+            if (command.equals("2")) {
                 stack.pop();
-            } else if (input[0] == 3) {
+            } else if (command.equals("3")) {
                 System.out.println(Collections.max(stack));
+            } else {
+                String[] commandParts = command.split("\\s+");
+                int number = Integer.parseInt(commandParts[1]);
+                stack.push(number);
             }
         }
     }
