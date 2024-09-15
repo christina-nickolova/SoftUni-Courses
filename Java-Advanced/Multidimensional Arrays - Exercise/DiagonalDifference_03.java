@@ -1,8 +1,7 @@
-import java.util.ArrayDeque;
 import java.util.Arrays;
 import java.util.Scanner;
 
-public class PrintDiagonalsOfSquareMatrix_06 {
+public class DiagonalDifference_03 {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
@@ -16,16 +15,15 @@ public class PrintDiagonalsOfSquareMatrix_06 {
                     .toArray();
             matrix[i] = matrixRow;
         }
-
-        ArrayDeque<Integer> firstDiagonal = new ArrayDeque<>();
-        ArrayDeque<Integer> secondDiagonal = new ArrayDeque<>();
+        int sumFirstDiagonal = 0;
+        int sumSecondDiagonal = 0;
 
         for (int row = 0; row < matrix.length; row++) {
 
             for (int col = 0; col < matrix[row].length; col++) {
 
                 if (row == col) {
-                    firstDiagonal.offer(matrix[row][col]);
+                    sumFirstDiagonal += matrix[row][col];
                 }
             }
         }
@@ -34,13 +32,11 @@ public class PrintDiagonalsOfSquareMatrix_06 {
         int currentCol = 0;
 
         while (counter > 0) {
-            secondDiagonal.offer(matrix[currentRow][currentCol]);
+            sumSecondDiagonal += matrix[currentRow][currentCol];
             currentRow--;
             currentCol++;
             counter--;
         }
-        firstDiagonal.forEach(e -> System.out.print(e + " "));
-        System.out.println();
-        secondDiagonal.forEach(e -> System.out.print(e + " "));
+        System.out.println(Math.abs(sumFirstDiagonal - sumSecondDiagonal));
     }
 }

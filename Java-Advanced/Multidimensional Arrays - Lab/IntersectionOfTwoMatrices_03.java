@@ -3,47 +3,39 @@ import java.util.Scanner;
 public class IntersectionOfTwoMatrices_03 {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        int rows = Integer.parseInt(scanner.nextLine());
-        int cols = Integer.parseInt(scanner.nextLine());
 
-        String[][] firstMatrix = createMatrix(rows, cols);
-        fillMatrix(scanner, firstMatrix);
+        int matrixRows = Integer.parseInt(scanner.nextLine());
+        int matrixCols = Integer.parseInt(scanner.nextLine());
 
-        String[][] secondMatrix = createMatrix(rows, cols);
-        fillMatrix(scanner, secondMatrix);
+        String[][] firstMatrix = new String[matrixRows][matrixCols];
+        fillMatrix(firstMatrix, scanner);
 
-        String[][] thirdMatrix = createMatrix(rows, cols);
+        String[][] secondMatrix = new String[matrixRows][matrixCols];
+        fillMatrix(secondMatrix, scanner);
+
 
         for (int row = 0; row < firstMatrix.length; row++) {
 
             for (int col = 0; col < firstMatrix[row].length; col++) {
-                String firstMatrixSymbol = firstMatrix[row][col];
-                String secondMatrixSymbol = secondMatrix[row][col];
 
-                if (firstMatrixSymbol.equals(secondMatrixSymbol)) {
-                    thirdMatrix[row][col] = firstMatrixSymbol;
+                if (firstMatrix[row][col].equals(secondMatrix[row][col])) {
+                    System.out.print(firstMatrix[row][col] + " ");
                 } else {
-                    thirdMatrix[row][col] = "*";
+                    System.out.print("* ");
                 }
-            }
-        }
-
-        for (String[] row : thirdMatrix) {
-
-            for (String symbol : row) {
-                System.out.print(symbol + " ");
             }
             System.out.println();
         }
     }
 
-    private static String[][] createMatrix(int rows, int cols) {
-        return new String[rows][cols];
+    private static void fillMatrix(String[][] matrix, Scanner scanner) {
+        for (int i = 0; i < matrix.length; i++) {
+            String[] matrixRow = readStringArray(scanner);
+            matrix[i] = matrixRow;
+        }
     }
 
-    private static void fillMatrix(Scanner scanner, String[][] matrix) {
-        for (int row = 0; row < matrix.length; row++) {
-            matrix[row] = scanner.nextLine().split("\\s+");
-        }
+    private static String[] readStringArray(Scanner scanner) {
+        return scanner.nextLine().split("\\s+");
     }
 }

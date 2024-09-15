@@ -4,55 +4,57 @@ import java.util.Scanner;
 public class CompareMatrices_01 {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
+        int[] firstMatrixDimensions = readIntArray(scanner);
+        int firstMatrixRows = firstMatrixDimensions[0];
+        int firstMatrixCols = firstMatrixDimensions[1];
 
-        int[][] firstMatrix = createMatrix(scanner);
-        int[][] secondMatrix = createMatrix(scanner);
+        int[][] firstMatrix = new int[firstMatrixRows][firstMatrixCols];
+        fillMatrix(firstMatrixRows, scanner, firstMatrix);
 
-        boolean areEqual = firstMatrix.length == secondMatrix.length;
+        int[] secondMatrixDimensions = readIntArray(scanner);
+        int secondMatrixRows = secondMatrixDimensions[0];
+        int secondMatrixCols = secondMatrixDimensions[1];
 
-        if (areEqual) {
+        int[][] secondMatrix = new int[secondMatrixRows][secondMatrixCols];
+        fillMatrix(secondMatrixRows, scanner, secondMatrix);
 
-            for (int row = 0; row < firstMatrix.length; row++) {
-
-                for (int column = 0; column < firstMatrix[row].length; column++) {
-
-                    if (firstMatrix[row].length != secondMatrix[row].length) {
-                        areEqual = false;
-                        break;
-                    }
-
-                    if (firstMatrix[row][column] != secondMatrix[row][column]) {
-                        areEqual = false;
-                        break;
-                    }
-                }
-            }
-        }
-
-        if (areEqual) {
+        if (areMatricesEqual(firstMatrix, secondMatrix)) {
             System.out.println("equal");
         } else {
             System.out.println("not equal");
         }
     }
 
-    private static int[][] createMatrix(Scanner scanner) {
-        int[] matrixSize = readArray(scanner);
-
-        int rows = matrixSize[0];
-        int columns = matrixSize[1];
-
-        int[][] matrix = new int[rows][columns];
-
-        for (int i = 0; i < rows; i++) {
-            matrix[i] = readArray(scanner);
+    private static boolean areMatricesEqual(int[][] firstMatrix, int[][] secondMatrix) {
+        if (firstMatrix.length != secondMatrix.length) {
+            return false;
         }
-        return matrix;
+
+        for (int row = 0; row < firstMatrix.length; row++) {
+
+            if (firstMatrix[row].length != secondMatrix[row].length) {
+                return false;
+            }
+
+            for (int col = 0; col < firstMatrix[row].length; col++) {
+
+                if (firstMatrix[row][col] != secondMatrix[row][col]) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
-    private static int[] readArray(Scanner scanner) {
-        return Arrays
-                .stream(scanner.nextLine().split("\\s+"))
+    private static void fillMatrix(int matrixRows, Scanner scanner, int[][] matrix) {
+        for (int i = 0; i < matrixRows; i++) {
+            int[] matrixRow = readIntArray(scanner);
+            matrix[i] = matrixRow;
+        }
+    }
+
+    private static int[] readIntArray(Scanner scanner) {
+        return Arrays.stream(scanner.nextLine().split("\\s+"))
                 .mapToInt(Integer::parseInt)
                 .toArray();
     }
